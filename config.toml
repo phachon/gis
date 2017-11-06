@@ -1,0 +1,16 @@
+[listen]
+# 监听的 server
+server=":8087"
+[upload]
+# 表单提交字段
+form_field="upload"
+# 允许上传的图片格式
+allow_type = [".jpg", ".jpeg"]
+# 图片的大小 KB
+max_size = 1024
+# 图片上传根目录
+root_dir = "upload"
+# 图片保存文件名字符串长度
+filename_len = 16
+# 目录树的目录名长度
+dirname_len = 4

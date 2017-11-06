@@ -1,0 +1,8 @@
+log/*
+.DS_Store
+!.gitignore
+*.exe
+*.exe~
+go-imageServer
+go-imageServer.exe
+upload/
