@@ -17,3 +17,10 @@ filename_len = 16
 dirname_len = 4
 # 缩略图尺寸 width_height
 thumbnails = ["200_200", "300_300", "200_400"]
+
+# appname 用于授权,可多个
+[appname]
+    [appname.test]
+    app_key = "ad%4a*a&ada@#ada"
+    [appname.test1]
+    app_key = "sd(4a*yu&dai#9d3"

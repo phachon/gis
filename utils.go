@@ -3,6 +3,8 @@ package main
 import (
 	"time"
 	"math/rand"
+	"crypto/md5"
+	"encoding/hex"
 )
 
 type Utils struct {
@@ -40,4 +42,11 @@ func (utils *Utils) StringToPath(str string, n int) string {
 		path = path + "/" + str[strLen-r:]
 	}
 	return path
+}
+
+// md5加密
+func (utils *Utils) Md5Encode(str string) string {
+	hash := md5.New()
+	hash.Write([]byte(str))
+	return hex.EncodeToString(hash.Sum(nil))
 }

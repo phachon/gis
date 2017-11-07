@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>html示例</title>
+</head>
+<body>
+
+<form id="upload" enctype="multipart/form-data" method="post">
+    <input type="file" name="upload"><br>
+    <button onclick="uploadImage()" type="button">提交</button>
+</form>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+    function uploadImage() {
+        $.ajax({
+            url: "http://127.0.0.1:8087/image/upload",
+            data: new FormData($('#upload')[0]),
+            type: "POST",
+            processData: false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader('Appname', 'test');
+                xhr.setRequestHeader('Token', '1516b39a24e47b4494815eda73a72b79');
+            },
+            success: function(res) {
+                console.log(res)
+            }
+        });
+    }
+</script>
+</body>
+</html>

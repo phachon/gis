@@ -35,16 +35,58 @@ func (handle *HttpHandle) Index(w http.ResponseWriter, req *http.Request, params
 	fs.ServeHTTP(w, req)
 }
 
-// 处理上传请求
-func (handle *HttpHandle) Upload(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
-	handle.jsonSuccess(w,"", nil)
+// 验证 token 合法
+// params: req http.request
+// return: error. auth success err is nil
+func (handle *HttpHandle) authToken(req *http.Request) (err error) {
+
+	headerAppname := req.Header.Get("Appname")
+	headerToken := req.Header.Get("Token")
+
+	if headerAppname == "" {
+		return fmt.Errorf("%s", "auth faild: appname error!")
+	}
+	if headerToken == "" {
+		return fmt.Errorf("%s", "auth faild: appname error!")
+	}
+
+	appConf := conf.GetStringMapString("appname."+headerAppname)
+	if len(appConf) == 0 {
+		return fmt.Errorf("%s", "auth faild: appname error!")
+	}
+	appKey, ok := appConf["app_key"]
+	if !ok {
+		return fmt.Errorf("%s", "auth faild: appname conf error!")
+	}
+
+	token := NewUtils().Md5Encode(headerAppname+appKey)
+	if token != headerToken {
+		return fmt.Errorf("%s", "auth faild: token error!")
+	}
+
+	return nil
 }
 
 // 处理上传请求
 func (handle *HttpHandle) ImageUpload(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
 
-	//TODO 验证 token 合法
+	// 处理跨域
+	if req.Method == "OPTIONS" {
+		if origin := req.Header.Get("Origin"); origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers",
+				"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Token, Appname")
+		}
+		return
+	}
 
+	err := handle.authToken(req)
+	if err != nil {
+		log.Println(err.Error())
+		handle.jsonError(w, err.Error(), nil)
+		return
+	}
 	formField := conf.GetString("upload.form_field")
 	allowTypeSlice := conf.GetStringSlice("upload.allow_type")
 	rootDir := conf.GetString("upload.root_dir")
@@ -159,6 +201,12 @@ func (handle *HttpHandle) ImageFind(w http.ResponseWriter, req *http.Request, pa
 	rootDir := conf.GetString("upload.root_dir")
 	dirNameLen := conf.GetInt("upload.dirname_len")
 
+	if !strings.Contains(name, ".") {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("404 not found!"))
+		return
+	}
+
 	ext := name[strings.LastIndex(name, "."):]
 	if ext == "" {
 		w.WriteHeader(http.StatusNotFound)
@@ -190,6 +238,8 @@ func (handle *HttpHandle) jsonSuccess(w http.ResponseWriter, message string, dat
 
 // 返回 json
 func (handle *HttpHandle) jsonMessage(w http.ResponseWriter, code int, message, data interface{}) {
+	w.Header().Set("content-type", "application/json")
+
 	type Result struct {
 		Code    int         `json:"code"`
 		Message interface{} `json:"message"`
