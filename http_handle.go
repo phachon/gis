@@ -31,8 +31,9 @@ func NewHttpHandle() *HttpHandle  {
 
 // 处理首页静态文件
 func (handle *HttpHandle) Index(w http.ResponseWriter, req *http.Request, params httprouter.Params)  {
-	fs := http.FileServer(http.Dir("public"))
-	fs.ServeHTTP(w, req)
+	//fs := http.FileServer(http.Dir("public"))
+	//fs.ServeHTTP(w, req)
+	return
 }
 
 // 验证 token 合法
