@@ -25,6 +25,31 @@ go-imageServer.exe
 - linux:<br>
 ./go-imageServer
 
+## 配置文件
+
+config.toml 文件读取顺序：<br>
+- /etc/go-realtimechat/config.toml
+- $HOME/.go-realtimechat/config.toml
+- ./config.toml
+
+```
+[listen]
+server="127.0.0.1:8087"  // 监听的 server
+[upload]
+form_field="upload" // 表单提交字段
+allow_type = [".jpg", ".jpeg", ".png"] // 允许上传的图片格式
+max_size = 2048 // 图片的最大上传大小 KB
+root_dir = "upload" // 图片上传根目录
+filename_len = 16 // 图片保存文件名字符串长度
+dirname_len = 4  // 目录树的目录名长度
+thumbnails = ["200_200", "300_300", "200_400"] // 要生成的缩略图尺寸 width_height
+[appname] // appname 用于授权,可多个
+    [appname.test]
+    app_key = "ad%4a*a&ada@#ada"
+    [appname.test1]
+    app_key = "sd(4a*yu&dai#9d3"
+```
+
 ## api 说明
 
 - 上传接口
@@ -50,38 +75,19 @@ go-imageServer.exe
 请求方式：GET<br>
 返回：图片
 
+- Token 生成规则
+```
+token = md5(appname+appKey)
+```
+
 ## 客户端调用示例
-- php<br>
-example/php/php.go
-- go<br>
-example/go/upload.go
-- html<br>
-example/html/index.html
+- php <br>
+https://github.com/phachon/go-imageServer/example/php/php.go
+- go <br>
+https://github.com/phachon/go-imageServer/example/go/upload.go
+- html <br>
+https://github.com/phachon/go-imageServer/example/html/index.html
 
-## 配置解析
-
-config.toml 文件读取顺序：<br>
-- /etc/go-realtimechat/config.toml
-- $HOME/.go-realtimechat/config.toml
-- ./config.toml
-
-```
-[listen]
-server="127.0.0.1:8087"  // 监听的 server
-[upload]
-form_field="upload" // 表单提交字段
-allow_type = [".jpg", ".jpeg", ".png"] // 允许上传的图片格式
-max_size = 2048 // 图片的最大上传大小 KB
-root_dir = "upload" // 图片上传根目录
-filename_len = 16 // 图片保存文件名字符串长度
-dirname_len = 4  // 目录树的目录名长度
-thumbnails = ["200_200", "300_300", "200_400"] // 要生成的缩略图尺寸 width_height
-[appname] // appname 用于授权,可多个
-    [appname.test]
-    app_key = "ad%4a*a&ada@#ada"
-    [appname.test1]
-    app_key = "sd(4a*yu&dai#9d3"
-```
 
 ## 反馈
 
