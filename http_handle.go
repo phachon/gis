@@ -67,19 +67,24 @@ func (handle *HttpHandle) authToken(req *http.Request) (err error) {
 	return nil
 }
 
-// 处理上传请求
-func (handle *HttpHandle) ImageUpload(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
+//处理跨域
+func (handle *HttpHandle) CrossDomain(w http.ResponseWriter, req *http.Request, params httprouter.Params)  {
 
-	// 处理跨域
 	if req.Method == "OPTIONS" {
 		if origin := req.Header.Get("Origin"); origin != "" {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers",
-				"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Token, Appname")
+		}else {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
 		}
-		return
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers",
+			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Token, Appname")
 	}
+	log.Println("allow crossdomain")
+}
+
+// 处理上传请求
+func (handle *HttpHandle) ImageUpload(w http.ResponseWriter, req *http.Request, params httprouter.Params) {
 
 	err := handle.authToken(req)
 	if err != nil {
@@ -255,8 +260,9 @@ func (handle *HttpHandle) jsonMessage(w http.ResponseWriter, code int, message, 
 		result.Code = 0
 		result.Message = err.Error()
 		resultByte, _ = json.Marshal(result)
-		fmt.Fprint(w, string(resultByte))
+		w.Write(resultByte)
 		return
 	}
-	fmt.Fprint(w, string(resultByte))
+	//responseByte := callback+"("+string(resultByte)+")"
+	w.Write(resultByte)
 }

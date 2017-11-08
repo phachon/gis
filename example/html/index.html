@@ -2,28 +2,92 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>html示例</title>
+    <title>js上传示例</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-
-<form id="upload" enctype="multipart/form-data" method="post">
-    <input type="file" name="upload"><br>
-    <button onclick="uploadImage()" type="button">提交</button>
-</form>
-<script type="text/javascript" src="jquery.js"></script>
+<div class="panel panel-default">
+    <hr>
+    <div class="panel-body">
+        <form class="form-horizontal" method="post" action="">
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="text-danger"> * </span> 上传地址</label>
+                <div class="col-sm-4">
+                    <input type="text" name="url" class="form-control" placeholder="请输入图片上传地址" value="http://127.0.0.1:8087/image/upload" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="text-danger"> * </span> appname </label>
+                <div class="col-sm-4">
+                    <input type="text" name="appname" class="form-control" placeholder="appname" value="test" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="text-danger"> * </span> appKey</label>
+                <div class="col-sm-4">
+                    <input type="text" name="appKey" class="form-control" placeholder="appKey" value="ad%4a*a&ada@#ada" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="text-danger"> * </span> 图片上传</label>
+                <div class="col-sm-4">
+                    <input type="file" name="upload">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" onclick="uploadImage()" class="btn btn-success">提交</button>
+                </div>
+            </div>
+    </form>
+    </div>
+</div>
 <script type="text/javascript">
     function uploadImage() {
+        var url = $("input[name='url']").val();
+        var appname = $("input[name='appname']").val();
+        var appKey = $("input[name='appKey']").val();
+        var file = $("input[name='upload']").val();
+        if (url == "") {
+            alert("请输入图片上传地址!");
+            return
+        }
+        if (appname == "") {
+            alert("请输入appname!");
+            return
+        }
+        if (appKey == "") {
+            alert("请输入appKey!");
+            return
+        }
+        if (file == "") {
+            alert("请选择图片!");
+            return
+        }
+        var token = $.md5(appname+appKey);
+        var formData = new FormData(document.querySelector("form"));
         $.ajax({
-            url: "http://127.0.0.1:8087/image/upload",
-            data: new FormData($('#upload')[0]),
+            url: url,
+            data: formData,
             type: "POST",
-            processData: false,
+            dataType: "json",
+            jsonp: "callback",
+            jsonpCallback:"test",
+            cache: false,
+            processData: false,   //不对数据预处理
+            contentType: false,   //不设置内容类型
             beforeSend: function(xhr){
-                xhr.setRequestHeader('Appname', 'test');
-                xhr.setRequestHeader('Token', '1516b39a24e47b4494815eda73a72b79');
+                xhr.setRequestHeader('Appname', appname);
+                xhr.setRequestHeader('Token', token);
             },
-            success: function(res) {
-                console.log(res)
+            success: function (res) {
+                console.log(res);
+            },
+            complete: function (res) {
+                console.log(res);
             }
         });
     }

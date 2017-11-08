@@ -19,9 +19,9 @@ func main()  {
 	httpHandle := NewHttpHandle()
 	router.GET("/", httpHandle.Index)
 	router.POST("/image/upload", httpHandle.ImageUpload)
-	//跨域 options 预处理
-	router.OPTIONS("/image/upload", httpHandle.ImageUpload)
 	router.GET("/image/:name", httpHandle.ImageFind)
+	//跨域
+	router.OPTIONS("/image/upload", httpHandle.CrossDomain)
 
 	log.Println("start server: " + server)
 	err := http.ListenAndServe(server, router)
