@@ -17,8 +17,8 @@ func initConfig()  {
 	conf.SetDefault("version", "v1.0.0")
 	if(*configPath == "") {
 		conf.SetConfigName("config")
-		conf.AddConfigPath("/etc/go-realtimechat/")
-		conf.AddConfigPath("$HOME/.go-realtimechat")
+		conf.AddConfigPath("/etc/go-imageServer/")
+		conf.AddConfigPath("$HOME/.go-imageServer")
 		conf.AddConfigPath(".")
 	}else {
 		conf.SetConfigFile(*configPath)

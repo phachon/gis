@@ -28,8 +28,8 @@ go-imageServer.exe
 ## 配置文件
 
 config.toml 文件读取顺序：<br>
-- /etc/go-realtimechat/config.toml
-- $HOME/.go-realtimechat/config.toml
+- /etc/go-imageServer/config.toml
+- $HOME/.go-imageServer/config.toml
 - ./config.toml
 
 ```
