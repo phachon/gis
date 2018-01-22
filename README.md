@@ -38,6 +38,7 @@ config.toml 文件读取顺序：<br>
 upload="127.0.0.1:8087"
 # 监听下载 server
 download="127.0.0.1:8088"
+
 [upload]
 form_field="upload" // 表单提交字段
 allow_type = [".jpg", ".jpeg", ".png"] // 允许上传的图片格式
@@ -70,10 +71,10 @@ uri = "http://test.com:8088"
   "code":"1",   // 1:success, 0:error
   "message":"", // error message
   "data":{
-       "image": "http://127.0.0.1:8087/image/LYEDBYKAFGGRJUFL.png"
-       "image_200_200": "http://127.0.0.1:8087/image/LYEDBYKAFGGRJUFL_200_200.png"
-       "image_200_400": "http://127.0.0.1:8087/image/LYEDBYKAFGGRJUFL_200_400.png"
-       "image_300_300": "http://127.0.0.1:8087/image/LYEDBYKAFGGRJUFL_300_300.png"
+       "image": "http://test.com:8088/image/LYEDBYKAFGGRJUFL.png"
+       "image_200_200": "http://test.com:8088/image/LYEDBYKAFGGRJUFL_200_200.png"
+       "image_200_400": "http://test.com:8088/image/LYEDBYKAFGGRJUFL_200_400.png"
+       "image_300_300": "http://test.com:8088/image/LYEDBYKAFGGRJUFL_300_300.png"
    }, // server image url
 }
 ```
