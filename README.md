@@ -34,7 +34,10 @@ config.toml 文件读取顺序：<br>
 
 ```
 [listen]
-server="127.0.0.1:8087"  // 监听的 server
+# 监听上传 server
+upload="127.0.0.1:8087"
+# 监听下载 server
+download="127.0.0.1:8088"
 [upload]
 form_field="upload" // 表单提交字段
 allow_type = [".jpg", ".jpeg", ".png"] // 允许上传的图片格式
@@ -43,6 +46,11 @@ root_dir = "upload" // 图片上传根目录
 filename_len = 16 // 图片保存文件名字符串长度
 dirname_len = 4  // 目录树的目录名长度
 thumbnails = ["200_200", "300_300", "200_400"] // 要生成的缩略图尺寸 width_height
+
+[download]
+# 下载的地址 协议://域名:端口
+uri = "http://test.com:8088"
+
 [appname] // appname 用于授权,可多个
     [appname.test]
     app_key = "ad%4a*a&ada@#ada"
