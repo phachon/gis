@@ -100,8 +100,8 @@ func (handle *HttpHandle) ImageUpload(w http.ResponseWriter, req *http.Request, 
 	dirNameLen := conf.GetInt("upload.dirname_len")
 	maxSize := conf.GetInt("upload.max_size")
 	thumbnails := conf.GetStringSlice("upload.thumbnails")
-	server := conf.GetString("listen.server")
-	imageUrl := "http://"+server+"/image/"
+	downloadUri := conf.GetString("download.uri")
+	imageUrl := downloadUri+"/image/"
 
 	req.ParseMultipartForm(4*1024)
 	file, fileHeader, err := req.FormFile(formField)
@@ -196,6 +196,9 @@ func (handle *HttpHandle) ImageUpload(w http.ResponseWriter, req *http.Request, 
 
 		data["image_"+thumbnail] = imageUrl+ randString + "_" + thumbnail + ext
 	}
+
+	appname := req.Header.Get("Appname")
+	log.Println("app ["+appname+"] upload image "+randString +ext+" success")
 
 	handle.jsonSuccess(w, "", data)
 }

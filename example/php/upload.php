@@ -15,8 +15,9 @@ $token = md5($appname.$appKey);
 // 设置 header 头
 $headers = ['Appname: test', 'Token: '.$token,];
 // 文件绝对路径
-$file = __DIR__.'/image/test.jpg';
+$file = realpath(__DIR__.'/../image/test.jpg');
 
+echo $file;
 // 发送数据
 $data = array(
 	'upload' => new CURLFile(realpath($file))

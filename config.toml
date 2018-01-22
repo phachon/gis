@@ -1,6 +1,8 @@
 [listen]
-# 监听的 server
-server="127.0.0.1:8087"
+# 监听上传 server
+upload="127.0.0.1:8087"
+# 监听下载 server
+download="127.0.0.1:8088"
 
 [upload]
 # 表单提交字段
@@ -17,6 +19,10 @@ filename_len = 16
 dirname_len = 4
 # 缩略图尺寸 width_height
 thumbnails = ["200_200", "300_300", "200_400"]
+
+[download]
+# 下载的地址 协议://域名:端口
+uri = "http://test.com:8088"
 
 # appname 用于授权,可多个
 [appname]
