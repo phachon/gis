@@ -105,7 +105,7 @@ token = md5(appname+appKey)
 - 返回：图片
 
 ## 客户端调用示例
-- [php](https://github.com/phachon/gis/tree/master/_example/php/php.go)
+- [php](https://github.com/phachon/gis/tree/master/_example/php/upload.php)
 - [go](https://github.com/phachon/gis/tree/master/_example/go/upload.go)
 - [html](https://github.com/phachon/gis/tree/master/_example/html/index.html)
 
