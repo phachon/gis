@@ -6,3 +6,4 @@ log/*
 gis
 gis.exe
 upload/
+release-*/
