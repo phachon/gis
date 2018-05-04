@@ -1,36 +1,55 @@
-# go-imageServer
-go 实现的图片服务, 提供基本的上传,存储,缩放,下载等功能
+```
+             _
+   ____ _   (_)  _____
+  / __  /  / /  / ___/
+ / /_/ /  / /  (__  )
+ \__, /  /_/  /____/
+/____/
+
+```
+# go image server
+go 实现的图片服务, 提供基本的上传, 存储, 缩放, 下载等功能<br>
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/go-imageServer/)
+[![license](https://img.shields.io/github/license/phachon/go-imageServer.svg?style=plastic)]()
+[![download_count](https://img.shields.io/github/downloads/phachon/go-imageServer/total.svg?style=plastic)](https://github.com/phachon/go-imageServer/releases)
+[![release](https://img.shields.io/github/release/phachon/go-imageServer.svg?style=plastic)](https://github.com/phachon/go-imageServer/releases)
 
 ## 功能
 - http 上传
 - 图片存储
 - 按比例自动缩放生成图片
-- 图片浏览
+- 图片下载浏览
 
 ## 安装
+
 1. 普通安装<br>
 下载地址：https://github.com/phachon/go-imageServer/releases<br>
 找到对应的版本下载
+
 2. 手动安装<br>
 http下载地址：https://github.com/phachon/go-imageServer.git<br>
 ssh 下载地址：git@github.com:phachon/go-imageServer.git<br>
+
 ```
 cd go-imageServer
 go get ./...
 go build ./
 ```
-## 访问
+## 使用
 - windows:<br>
+```
 go-imageServer.exe
+# 指定配置文件启动
+go-imageServer.exe --conf config.toml
+```
 - linux:<br>
+```
 ./go-imageServer
+# 指定配置文件启动
+./go-imageServer --conf config.toml
+```
 
-## 配置文件
-
-config.toml 文件读取顺序：<br>
-- /etc/go-imageServer/config.toml
-- $HOME/.go-imageServer/config.toml
-- ./config.toml
+## 配置
 
 ```
 [listen]
@@ -91,11 +110,11 @@ token = md5(appname+appKey)
 
 ## 客户端调用示例
 - php <br>
-https://github.com/phachon/go-imageServer/example/php/php.go
+https://github.com/phachon/go-imageServer/tree/master/_example/php/php.go
 - go <br>
-https://github.com/phachon/go-imageServer/example/go/upload.go
+https://github.com/phachon/go-imageServer/tree/master/_example/go/upload.go
 - html <br>
-https://github.com/phachon/go-imageServer/example/html/index.html
+https://github.com/phachon/go-imageServer/tree/master/_example/html/index.html
 
 
 ## 反馈

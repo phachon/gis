@@ -4,6 +4,21 @@ upload="127.0.0.1:8087"
 # 监听下载 server
 download="127.0.0.1:8088"
 
+[log.console]
+level="debug"
+color=true
+jsonFormat=false
+
+[log.file]
+level="debug"
+filename="log/gis_access.log"
+maxSize=1048576
+maxLine=1000000
+dateSlice="d"
+jsonFormat=true
+    [log.file.levelFilename]
+    error="log/gis_error.log"
+
 [upload]
 # 表单提交字段
 form_field="upload"

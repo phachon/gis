@@ -1,55 +1,64 @@
 package main
 
 import (
-	"net/http"
-	"log"
-	"github.com/julienschmidt/httprouter"
-	"os"
+	"go-imageServer/app"
+	"go-imageServer/app/controllers"
+	"github.com/valyala/fasthttp"
+	"github.com/buaazp/fasthttprouter"
 )
 
-// go 实现的图片上传,存储,缩放,下载服务
+// gis (go image server)
 
-func init()  {
-	initConfig();
-}
+
+var (
+	imageController = controllers.NewImageController()
+)
 
 func main()  {
+	go func() {
+		defer func() {
+			e := recover()
+			if e != nil {
+				app.Log.Errorf("gis upload server crash, %v", e)
+			}
+		}()
+		uploadServer()
+	}()
 
-	go downloadServer()
-	uploadServer()
+	downloadServer()
 }
 
 // 上传 server
 func uploadServer()  {
 
-	uploadServer := conf.GetString("listen.upload")
-	router := httprouter.New()
-	httpHandle := NewHttpHandle()
-	router.GET("/", httpHandle.Index)
-	router.POST("/image/upload", httpHandle.ImageUpload)
-	//跨域
-	router.OPTIONS("/image/upload", httpHandle.CrossDomain)
+	uploadServer := app.Conf.GetString("listen.upload")
+	app.Log.Info("start listen server "+uploadServer)
 
-	log.Println("upload server start listen: " + uploadServer)
-	err := http.ListenAndServe(uploadServer, router)
+	router := fasthttprouter.New()
+	router.POST("/image/upload", imageController.Upload)
+	router.OPTIONS("/image/upload", imageController.CrossDomain)
+
+	app.Log.Infof("upload server start listen: %s", uploadServer)
+
+	err := fasthttp.ListenAndServe(uploadServer, router.Handler)
 	if err != nil {
-		log.Println("upload server listen faild: " +err.Error())
-		os.Exit(0)
+		app.Log.Errorf("listen upload server %s error: %s", uploadServer, err.Error())
 	}
 }
 
 // 下载 server
 func downloadServer()  {
 
-	downloadServer := conf.GetString("listen.download")
-	router := httprouter.New()
-	httpHandle := NewHttpHandle()
-	router.GET("/image/:name", httpHandle.ImageFind)
+	downloadServer := app.Conf.GetString("listen.download")
+	router := fasthttprouter.New()
 
-	log.Println("download server start listen: " + downloadServer)
-	err := http.ListenAndServe(downloadServer, router)
+	router.GET("/image/:name", imageController.Download)
+	router.OPTIONS("/image/:name", imageController.CrossDomain)
+
+	app.Log.Infof("download server start listen: %s", downloadServer)
+
+	err := fasthttp.ListenAndServe(downloadServer, router.Handler)
 	if err != nil {
-		log.Println("download server listen faild:" + err.Error())
-		os.Exit(0)
+		app.Log.Info("listen download server "+downloadServer+" error :"+err.Error())
 	}
 }

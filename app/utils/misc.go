@@ -1,22 +1,14 @@
-package main
+package utils
 
 import (
-	"time"
 	"math/rand"
+	"time"
 	"crypto/md5"
 	"encoding/hex"
 )
 
-type Utils struct {
-
-}
-
-func NewUtils() *Utils {
-	return &Utils{}
-}
-
 //生成随机字符串
-func (utils *Utils) GetRandomString(strLen int) string{
+func GetRandomString(strLen int) string{
 	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := []byte(str)
 	result := []byte{}
@@ -28,7 +20,7 @@ func (utils *Utils) GetRandomString(strLen int) string{
 }
 
 //字符串分割生成目录
-func (utils *Utils) StringToPath(str string, n int) string {
+func StringToPath(str string, n int) string {
 	strLen := len(str)
 	if n >= strLen {
 		return "/" + str
@@ -45,7 +37,7 @@ func (utils *Utils) StringToPath(str string, n int) string {
 }
 
 // md5加密
-func (utils *Utils) Md5Encode(str string) string {
+func Md5Encode(str string) string {
 	hash := md5.New()
 	hash.Write([]byte(str))
 	return hex.EncodeToString(hash.Sum(nil))
