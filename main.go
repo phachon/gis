@@ -9,7 +9,6 @@ import (
 
 // gis (go image server)
 
-
 var (
 	imageController = controllers.NewImageController()
 )
@@ -32,7 +31,6 @@ func main()  {
 func uploadServer()  {
 
 	uploadServer := app.Conf.GetString("listen.upload")
-	app.Log.Info("start listen server "+uploadServer)
 
 	router := fasthttprouter.New()
 	router.POST("/image/upload", imageController.Upload)
@@ -59,6 +57,6 @@ func downloadServer()  {
 
 	err := fasthttp.ListenAndServe(downloadServer, router.Handler)
 	if err != nil {
-		app.Log.Info("listen download server "+downloadServer+" error :"+err.Error())
+		app.Log.Errorf("listen download server %s error: %s", downloadServer, err.Error())
 	}
 }

@@ -59,6 +59,9 @@ func (baseService *BaseController) jsonSuccess(ctx *fasthttp.RequestCtx, message
 
 // return json result
 func (baseService *BaseController) jsonResult(ctx *fasthttp.RequestCtx, code int, message interface{}, data interface{}) {
+
+	ctx.Response.Header.Set("Content-Type", "application/json; charset=utf-8")
+
 	if message == nil {
 		message = ""
 	}

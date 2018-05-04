@@ -5,7 +5,6 @@ import (
 	"io"
 	"strings"
 	"strconv"
-	"log"
 	"os"
 	"gis/app"
 	"gis/app/utils"
@@ -51,13 +50,13 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 	ctx.Request.MultipartForm()
 	fileHeader, err := ctx.FormFile(formField)
 	if err != nil {
-		//log.Println("upload field error: ", err.Error())
+		app.Log.Errorf("upload failed error: %S", err.Error())
 		this.jsonError(ctx, "upload failed!", nil)
 		return
 	}
 	fileObject, err := fileHeader.Open()
 	if err != nil {
-		//log.Println("upload field error: ", err.Error())
+		app.Log.Errorf("upload failed error: %s", err.Error())
 		this.jsonError(ctx, "upload failed!", nil)
 		return
 	}
@@ -74,7 +73,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 		}
 	}
 	if isAllow == false {
-		//log.Println("Forbidden upload format: " + ext)
+		app.Log.Errorf("upload image format %s not allow!", ext)
 		this.jsonError(ctx, "upload image format not allow!", nil)
 		return
 	}
@@ -84,7 +83,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 		fileInfo, _ := statInterface.Stat()
 		size := fileInfo.Size()/1024
 		if size > int64(maxSize) {
-			//log.Printf("upload image beyond maximum limit: %d kb", maxSize)
+			app.Log.Errorf("upload image beyond maximum limit: %d kb", maxSize)
 			this.jsonError(ctx, "upload image size "+ strconv.Itoa(int(size)) +" maximum limit! ", nil)
 			return
 		}
@@ -100,7 +99,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 		uploadPath = rootDir + utils.StringToPath(randString, dirNameLen)
 		err = os.MkdirAll(uploadPath, 0755)
 		if err != nil {
-			//log.Println("create upload dir failed: " + err.Error())
+			app.Log.Errorf("create upload dir failed: %s", err.Error())
 			this.jsonError(ctx, "create upload dir failed!", nil)
 			return
 		}
@@ -111,7 +110,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 		}
 	}
 	if i == 10 {
-		log.Println("create upload dir failed: random collision 10!")
+		app.Log.Errorf("create upload dir failed, random collision 10!")
 		this.jsonError(ctx, "create upload dir failed!", nil)
 		return
 	}
@@ -119,7 +118,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 	//将文件写入到指定的位置
 	f, err := os.OpenFile(saveFilename, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
-		log.Println("save file error: " + err.Error())
+		app.Log.Errorf("save image file error: %s",  err.Error())
 		this.jsonError(ctx, "save image file error!", nil)
 		return
 	}
@@ -141,7 +140,7 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 		thumbSaveFilename := uploadPath + "/" + randString + "_" + thumbnail + ext
 		err := utils.NewImager().Scaling(saveFilename, thumbSaveFilename, width, height)
 		if err != nil {
-			log.Println("make thumbnail image error: " + err.Error())
+			app.Log.Errorf("make thumbnail image error: %s", err.Error())
 			continue
 		}
 
@@ -149,7 +148,14 @@ func (this *ImageController) Upload(ctx *fasthttp.RequestCtx) {
 	}
 
 	appname := string(ctx.Request.Header.Peek("Appname"))
-	log.Println("app ["+appname+"] upload image "+randString +ext+" success")
+	app.Log.Infof("appname ["+appname+"] upload image %s success", randString+ext)
+
+	origin := string(ctx.Request.Header.Peek("Origin"))
+	if (origin != "") && (origin != "null") {
+		ctx.Response.Header.Set("Access-Control-Allow-Origin", origin)
+	}else {
+		ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
+	}
 
 	this.jsonSuccess(ctx, "", data)
 }
@@ -189,15 +195,13 @@ func (this *ImageController) Download(ctx *fasthttp.RequestCtx) {
 //处理跨域
 func (this *ImageController) CrossDomain(ctx *fasthttp.RequestCtx)  {
 
-	if string(ctx.Method()) == "OPTIONS" {
-		origin := string(ctx.Request.Header.Peek("Origin"))
-		if origin != "" {
-			ctx.Response.Header.Set("Access-Control-Allow-Origin", origin)
-		}else {
-			ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
-		}
-		ctx.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		ctx.Response.Header.Set("Access-Control-Allow-Headers",
-			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Token, Appname")
+	origin := string(ctx.Request.Header.Peek("Origin"))
+	if (origin != "") && (origin != "null") {
+		ctx.Response.Header.Set("Access-Control-Allow-Origin", origin)
+	}else {
+		ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
 	}
+	ctx.Response.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	ctx.Response.Header.Set("Access-Control-Allow-Headers",
+		"Accept, Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Token, Appname")
 }
