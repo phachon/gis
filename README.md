@@ -24,12 +24,12 @@ go 实现的图片服务, 提供基本的上传, 存储, 缩放, 下载等功能
 ## 安装
 
 1. 普通安装
-下载地址：https://github.com/phachon/gis/releases
+下载地址：https://github.com/phachon/gis/releases  
 找到对应的版本下载
 
-2. 手动安装
-http下载地址：https://github.com/phachon/gis.git
-ssh 下载地址：git@github.com:phachon/gis.git
+2. 手动安装  
+http下载地址：https://github.com/phachon/gis.git  
+ssh 下载地址：git@github.com:phachon/gis.git  
 
 ```
 cd gis
@@ -37,7 +37,7 @@ go get ./...
 go build ./
 ```
 ## 使用
-- windows:
+- windows
 
 ```
 gis.exe
@@ -45,7 +45,7 @@ gis.exe
 gis.exe --conf config.toml
 ```
 
-- linux:
+- linux
 
 ```
 ./gis
