@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-imageServer/app"
-	"go-imageServer/app/controllers"
+	"gis/app"
+	"gis/app/controllers"
 	"github.com/valyala/fasthttp"
 	"github.com/buaazp/fasthttprouter"
 )

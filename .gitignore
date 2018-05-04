@@ -3,6 +3,6 @@ log/*
 !.gitignore
 *.exe
 *.exe~
-go-imageServer
-go-imageServer.exe
+gis
+gis.exe
 upload/

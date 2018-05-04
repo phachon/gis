@@ -8,11 +8,12 @@
 
 ```
 # go image server
-go 实现的图片服务, 提供基本的上传, 存储, 缩放, 下载等功能<br>
-[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/go-imageServer/)
-[![license](https://img.shields.io/github/license/phachon/go-imageServer.svg?style=plastic)]()
-[![download_count](https://img.shields.io/github/downloads/phachon/go-imageServer/total.svg?style=plastic)](https://github.com/phachon/go-imageServer/releases)
-[![release](https://img.shields.io/github/release/phachon/go-imageServer.svg?style=plastic)](https://github.com/phachon/go-imageServer/releases)
+go 实现的图片服务, 提供基本的上传, 存储, 缩放, 下载等功能
+
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/gis/)
+[![license](https://img.shields.io/github/license/phachon/gis.svg?style=plastic)]()
+[![download_count](https://img.shields.io/github/downloads/phachon/gis/total.svg?style=plastic)](https://github.com/phachon/gis/releases)
+[![release](https://img.shields.io/github/release/phachon/gis.svg?style=plastic)](https://github.com/phachon/gis/releases)
 
 ## 功能
 - http 上传
@@ -22,31 +23,34 @@ go 实现的图片服务, 提供基本的上传, 存储, 缩放, 下载等功能
 
 ## 安装
 
-1. 普通安装<br>
-下载地址：https://github.com/phachon/go-imageServer/releases<br>
+1. 普通安装
+下载地址：https://github.com/phachon/gis/releases
 找到对应的版本下载
 
-2. 手动安装<br>
-http下载地址：https://github.com/phachon/go-imageServer.git<br>
-ssh 下载地址：git@github.com:phachon/go-imageServer.git<br>
+2. 手动安装
+http下载地址：https://github.com/phachon/gis.git
+ssh 下载地址：git@github.com:phachon/gis.git
 
 ```
-cd go-imageServer
+cd gis
 go get ./...
 go build ./
 ```
 ## 使用
-- windows:<br>
+- windows:
+
 ```
-go-imageServer.exe
+gis.exe
 # 指定配置文件启动
-go-imageServer.exe --conf config.toml
+gis.exe --conf config.toml
 ```
-- linux:<br>
+
+- linux:
+
 ```
-./go-imageServer
+./gis
 # 指定配置文件启动
-./go-imageServer --conf config.toml
+./gis --conf config.toml
 ```
 
 ## 配置
@@ -110,11 +114,11 @@ token = md5(appname+appKey)
 
 ## 客户端调用示例
 - php <br>
-https://github.com/phachon/go-imageServer/tree/master/_example/php/php.go
+https://github.com/phachon/gis/tree/master/_example/php/php.go
 - go <br>
-https://github.com/phachon/go-imageServer/tree/master/_example/go/upload.go
+https://github.com/phachon/gis/tree/master/_example/go/upload.go
 - html <br>
-https://github.com/phachon/go-imageServer/tree/master/_example/html/index.html
+https://github.com/phachon/gis/tree/master/_example/html/index.html
 
 
 ## 反馈

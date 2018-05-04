@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"log"
 	"os"
-	"go-imageServer/app"
-	"go-imageServer/app/utils"
+	"gis/app"
+	"gis/app/utils"
 )
 
 // 获取文件大小的接口

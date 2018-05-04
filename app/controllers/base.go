@@ -4,8 +4,8 @@ import (
 	"github.com/valyala/fasthttp"
 	"encoding/json"
 	"strconv"
-	"go-imageServer/app"
-	"go-imageServer/app/utils"
+	"gis/app"
+	"gis/app/utils"
 	"errors"
 )
 
